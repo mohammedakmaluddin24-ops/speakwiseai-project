@@ -8,7 +8,6 @@ import imageio_ffmpeg
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-from pydub import AudioSegment
 from wordcloud import WordCloud
 
 from utils.ai_provider import get_ai_feedback
@@ -54,12 +53,7 @@ def audio_duration_minutes(audio_path: Path) -> float:
     except FileNotFoundError as exc:
         raise RuntimeError(f"Bundled FFmpeg executable was not found: {ffmpeg_path}") from exc
 
-    try:
-        AudioSegment.converter = ffmpeg_path
-        audio = AudioSegment.from_file(audio_path)
-        return len(audio) / 60000
-    except (FileNotFoundError, CalledProcessError) as exc:
-        raise RuntimeError("Could not read audio duration with bundled FFmpeg.") from exc
+    raise RuntimeError("Could not determine audio duration from ffmpeg output.")
 
 
 def metric_chart(label: str, value: float, max_value: float, color: str) -> go.Figure:
