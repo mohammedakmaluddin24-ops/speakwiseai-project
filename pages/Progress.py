@@ -4,7 +4,6 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-
 APP_DIR = Path(__file__).resolve().parents[1]
 HISTORY_PATH = APP_DIR / "data" / "history.csv"
 

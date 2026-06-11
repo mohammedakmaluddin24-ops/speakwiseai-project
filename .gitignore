@@ -6,3 +6,12 @@ streamlit.log
 streamlit.err.log
 streamlit_nested.log
 streamlit_nested.err.log
+.env
+.env.*
+!.env.example
+.coverage
+htmlcov/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.semgrep/

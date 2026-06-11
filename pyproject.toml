@@ -1,0 +1,61 @@
+[project]
+name = "speakwiseai"
+version = "0.1.0"
+description = "A Streamlit public speaking coach that transcribes speech, measures delivery quality, and provides AI feedback."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "AGPL-3.0-or-later" }
+authors = [{ name = "Mohammed Akmal" }]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+exclude = ["SpeakWiseAI", "data"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+warn_unused_configs = true
+exclude = ["SpeakWiseAI/"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=utils --cov=app --cov-report=term-missing --cov-fail-under=20"
+
+[tool.coverage.run]
+branch = true
+source = ["app", "utils"]
+omit = ["SpeakWiseAI/*", "tests/*"]
+
+[tool.coverage.report]
+fail_under = 20
+show_missing = true
+
+[tool.bandit]
+exclude_dirs = ["tests", "SpeakWiseAI", ".venv", "venv"]
+
+[tool.pylint.main]
+ignore = ["SpeakWiseAI", "data"]
+jobs = 0
+
+[tool.pylint.messages_control]
+disable = [
+  "missing-module-docstring",
+  "missing-function-docstring",
+  "too-many-locals",
+  "too-many-statements",
+  "broad-exception-caught",
+  "import-outside-toplevel",
+]
+
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.vulture]
+exclude = ["SpeakWiseAI/", "tests/"]
+min_confidence = 80
+paths = ["app.py", "utils", "pages"]

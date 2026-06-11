@@ -1,6 +1,24 @@
-# SpeakWiseAI project 
+# SpeakWiseAI
 
 
+
+SpeakWiseAI is a Streamlit public speaking coach that transcribes speech recordings, measures delivery metrics such as speaking pace and filler words, and provides rule-based plus optional AI feedback.
+
+## Compliance
+
+This repository is licensed under the GNU Affero General Public License v3.0 or later (`AGPL-3.0-or-later`) and includes quality, security, testing, CI, pre-commit, changelog, and spec-driven development configuration.
+
+Key local commands:
+
+```bash
+pip install -r requirements-dev.txt
+pytest
+ruff check .
+mypy app.py utils pages
+bandit -c pyproject.toml -r app.py utils pages
+pip-audit -r requirements.txt
+semgrep --config .semgrep.yml
+```
 
 ## Getting started
 

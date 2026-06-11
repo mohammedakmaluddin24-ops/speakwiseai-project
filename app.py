@@ -8,16 +8,16 @@ import imageio_ffmpeg
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-
-warnings.filterwarnings("ignore", message="Couldn't find ffmpeg or avconv.*")
 from pydub import AudioSegment
 from wordcloud import WordCloud
 
 from utils.ai_provider import get_ai_feedback
 from utils.analysis import calculate_wpm, count_fillers, top_words, total_words
-from utils.scoring import confidence_score, generate_feedback as generate_rule_feedback
+from utils.scoring import confidence_score
+from utils.scoring import generate_feedback as generate_rule_feedback
 from utils.transcribe import transcribe_audio
 
+warnings.filterwarnings("ignore", message="Couldn't find ffmpeg or avconv.*")
 
 APP_DIR = Path(__file__).parent
 DATA_DIR = APP_DIR / "data"

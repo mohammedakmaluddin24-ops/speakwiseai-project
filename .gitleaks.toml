@@ -1,0 +1,8 @@
+title = "SpeakWiseAI Gitleaks configuration"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Allow placeholder values in templates"
+paths = ['''\.env\.example$''']

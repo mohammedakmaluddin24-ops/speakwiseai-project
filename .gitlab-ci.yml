@@ -1,0 +1,87 @@
+stages:
+  - quality
+  - security
+  - test
+  - release
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+default:
+  image: python:3.11-slim
+  cache:
+    paths:
+      - .cache/pip
+  before_script:
+    - python -m pip install --upgrade pip
+    - pip install -r requirements-dev.txt
+
+ruff:
+  stage: quality
+  script:
+    - ruff check .
+    - ruff format --check .
+
+mypy:
+  stage: quality
+  script:
+    - mypy app.py utils pages
+
+vulture:
+  stage: quality
+  script:
+    - vulture app.py utils pages --min-confidence 80
+
+pylint:
+  stage: quality
+  script:
+    - pylint app.py utils pages
+
+flake8:
+  stage: quality
+  script:
+    - flake8 app.py utils pages
+
+pyupgrade:
+  stage: quality
+  script:
+    - python -m pip install pyupgrade
+    - pyupgrade --py311-plus app.py pages/*.py utils/*.py
+
+bandit:
+  stage: security
+  script:
+    - bandit -c pyproject.toml -r app.py utils pages
+
+semgrep:
+  stage: security
+  script:
+    - semgrep --config .semgrep.yml
+
+secret_scanning:
+  stage: security
+  image:
+    name: zricethezav/gitleaks:latest
+    entrypoint: [""]
+  before_script: []
+  script:
+    - gitleaks detect --source . --config .gitleaks.toml --redact --no-git
+
+dependency_audit:
+  stage: security
+  script:
+    - pip-audit -r requirements.txt
+
+tests:
+  stage: test
+  script:
+    - pytest --cov=utils --cov=app --cov-report=term-missing --cov-fail-under=20
+
+changelog:
+  stage: release
+  script:
+    - git-cliff --config .git-cliff.toml --output CHANGELOG.generated.md
+  artifacts:
+    paths:
+      - CHANGELOG.generated.md
+    expire_in: 1 week

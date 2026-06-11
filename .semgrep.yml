@@ -1,0 +1,7 @@
+rules:
+  - id: no-hardcoded-api-key
+    patterns:
+      - pattern-regex: "(?i)(api[_-]?key|secret|token)\\s*=\\s*[\"'][^\"']{16,}[\"']"
+    message: Avoid committing hardcoded secrets. Use environment variables or Streamlit session state.
+    severity: ERROR
+    languages: [python]

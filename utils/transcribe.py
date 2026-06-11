@@ -1,5 +1,5 @@
-from pathlib import Path
 import os
+from pathlib import Path
 from subprocess import CalledProcessError, run
 
 import imageio_ffmpeg
