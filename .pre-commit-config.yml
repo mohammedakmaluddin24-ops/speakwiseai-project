@@ -1,0 +1,9 @@
+# Compatibility alias for tools that look for .yml instead of .yaml.
+repos:
+  - repo: local
+    hooks:
+      - id: pre-commit-config-source
+        name: pre-commit-config-source
+        entry: python -c "from pathlib import Path; assert Path('.pre-commit-config.yaml').exists()"
+        language: system
+        pass_filenames: false

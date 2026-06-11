@@ -1,6 +1,9 @@
 stages:
-  - quality
+  - lint
+  - format
+  - type_check
   - security
+  - coverage
   - test
   - release
 
@@ -17,33 +20,37 @@ default:
     - pip install -r requirements-dev.txt
 
 ruff:
-  stage: quality
+  stage: lint
   script:
     - ruff check .
+
+ruff_format:
+  stage: format
+  script:
     - ruff format --check .
 
 mypy:
-  stage: quality
+  stage: type_check
   script:
     - mypy app.py utils pages
 
 vulture:
-  stage: quality
+  stage: lint
   script:
     - vulture app.py utils pages --min-confidence 80
 
 pylint:
-  stage: quality
+  stage: lint
   script:
     - pylint app.py utils pages
 
 flake8:
-  stage: quality
+  stage: lint
   script:
     - flake8 app.py utils pages
 
 pyupgrade:
-  stage: quality
+  stage: format
   script:
     - python -m pip install pyupgrade
     - pyupgrade --py311-plus app.py pages/*.py utils/*.py
@@ -72,10 +79,20 @@ dependency_audit:
   script:
     - pip-audit -r requirements.txt
 
+coverage:
+  stage: coverage
+  script:
+    - pytest --cov=utils --cov=app --cov-report=term-missing --cov-fail-under=20
+
 tests:
   stage: test
   script:
-    - pytest --cov=utils --cov=app --cov-report=term-missing --cov-fail-under=20
+    - pytest
+
+pre_commit:
+  stage: lint
+  script:
+    - pre-commit run --all-files
 
 changelog:
   stage: release
